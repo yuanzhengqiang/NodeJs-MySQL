@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+	<title>Demo</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="fonts/glyphicons-halflings-regular.eot">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<object type="application/x-shockwave-flash" style="outline:none; position:absolute; left:10px; top: 10px; z-index: 1; border-radius:100px" " data="http://cdn.abowman.com/widgets/fish/fish.swf?" width="200" height="200"></object>
+	<iframe allowtransparency="true" frameborder="0" width="140" height="278" scrolling="no" style="position:absolute; top:20px; right: 50px; " src="http://tianqi.2345.com/plugin/widget/index.htm?s=2&z=3&t=0&v=1&d=3&bd=0&k=&f=&q=1&e=1&a=1&c=54511&w=140&h=278&align=center"></iframe>
+	<div class="container" style="height: auto">
+		<div class="row mgtop10">
+			<div class="content">
+				
+				<div class="col-sm-10">
+					<button type="button" class="btn btn-primary bgbule" onclick="query()"><i class="glyphicon glyphicon-search fzsmall"></i> 查询</button>
+				</div>
+				<div class="col-sm-1">
+					<button type="button" class="btn btn-primary bgbule hide" data-toggle="modal" data-target="#myModal" id="editshow"></button><!--隐藏按钮-->
+					<button type="button" class="btn btn-primary bgbule" data-toggle="modal" data-target="#myModal" onclick="add()"><i class="glyphicon glyphicon-plus fzsmall"></i> 新增</button>
+				</div>
+				<div class="col-sm-1">
+					<button type="button" class="btn btn-danger " onclick="del()"><i class="glyphicon glyphicon-trash fzsmall" ></i> 删除</button>
+				</div>
+			</div>
+		</div>
+		<div class="row mgtop10" id="condition">
+			<div class="col-sm-2">
+				<label class="mgleft">姓名</label>
+			</div>
+			<div class="col-sm-10">
+				<input class="form-control" type="text" id="queryName" value="" autocomplete="off">
+			</div>
+			<div class="col-sm-2 mgtop5">
+				<label class="mgleft">性别</label>
+			</div>
+			<div class="col-sm-10 mgtop5">
+				<select class="form-control" id="queryGender" autocomplete="off">
+					<option value="" selected="selected">未选择</option>
+					<option value="男">男</option>
+					<option value="女">女</option>
+				</select>
+			</div>
+			<div class="col-sm-2 mgtop5">
+				<label class="mgleft">年龄</label>
+			</div>
+			<div class="col-sm-10 mgtop5">
+				<input class="form-control" type="text" id="queryAge" value="" autocomplete="off">
+			</div>
+			<div class="col-sm-2 mgtop5">
+				<label class="mgleft">手机号</label>
+			</div>
+			<div class="col-sm-10 mgtop5">
+				<input class="form-control" type="text" id="queryTel" value="" autocomplete="off">
+			</div>
+		</div>
+		<div class="table-responsive ofxhidden mgtop10 htauto" id="tableList">
+			<div class="row">
+				<div class="col-sm-12">
+					<table class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th class="wd2"><input type="checkbox" id="allselectchecker" onclick="selectAll()"></th>
+								<th class="text-center"><strong>姓名</strong></th>
+								<th class="text-center"><strong>性别</strong></th>
+								<th class="text-center"><strong>年龄</strong></th>
+								<th class="text-center"><strong>手机号</strong></th>
+								<th class="wd10 text-center"><strong>操作</strong></th>
+							</tr>
+						</thead>
+						<tbody id="InfoList">
+						</tbody>
+					</table>
+				</div>
+				<!-- 数据条数提示开始 -->
+				<div class="row pdbottom30">
+					<div class="col-sm-12">
+						<div class="pull-left pdleft20">
+							<div id="datatable_info" class="dataTables_info">
+								当前显示0 条总记录中的第0-0条
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<!-- 数据条数提示结束 -->
+				<!-- 分页条开始 -->
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="dataTables_length" id="datatable2_length">
+							<span style="margin-top:18px;display: ruby">每页 
+								<select id="pageSizeSelector" class="form-control wdauto" aria-controls="datatable2" size="1" onchange="query()">
+									<option selected="selected" value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+								</select> 条
+							</span>
+						</div>
+					</div>
+
+					<div class="col-sm-8">
+						<div class="pull-right pdright20">
+							<div class="dataTables_paginate paging_bs_normal">
+								<ul id="paginationArea" class="pagination mg0">
+								<li class="prev disabled"><a href="#"><span class="fa fa-angle-left"></span>&nbsp;上一页</a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li class="next"><a href="#">下一页&nbsp;<span class="fa fa-angle-right"></span></a></li></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 分页条结束 -->
+			</div>
+		</div>
+	</div>
+
+	<div class="modal mdsize" id="myModal">
+		<div class="modal-dialog" id="modalDialog">
+			<div class="model-content mdbg pd20">
+				<div class="model-header bdbottom">
+					<button class="colse flright" data-dismiss="modal">&times;</button>
+					<h3 class="model-title">个人信息</h3>
+				</div>
+				<div class="model-body mgtop20 form-horizontal">
+					<!--<form class="form-horizontal" action="http:127.0.0.1:8880" method="post">-->
+						
+						<div class="form-group">
+							<input type="text" name="id" id="id" class="hide" value="">
+							<label class="col-sm-3 control-lable tacenter">姓名 <span class="red mgtop5">*</span></label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" name="name" id="name" value="" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-lable tacenter">性别 <span class="red mgtop5">*</span></label>
+							<div class="col-sm-6">
+								<input type="text" name="gender" class="form-control hide" id="gender" value="" autocomplete="off">
+								<select class="form-control" id="gender1" onchange="document.getElementById('gender').value=this.value" autocomplete="off">
+									<option value="" selected="selected">未选择</option>
+									<option value="男">男</option>
+									<option value="女">女</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-lable tacenter">年龄 <span class="red mgtop5">*</span></label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" id="age" value="" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-lable tacenter">手机号 <span class="red mgtop5">*</span></label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" name="tel" id="tel" value="" autocomplete="off">
+							</div>
+						</div>
+						<!--<div class="form-group">
+							<label class="col-sm-3 control-lable tacenter">简历</label>
+							<div class="col-sm-6">
+								<input id="uploadFile" type="file" class="hide" onchange="document.getElementById('file').value=this.value" name="file" value="" multiple="multiple">  
+								<div class="input-append">  
+								    <input id="file" class="form-control" onclick="$('input[id=uploadFile]').click();" value="" type="text" placeholder="点击此处上传文件...">  
+								</div> 
+							</div>
+						</div>-->
+						<div class="form-group tacenter" id="save">
+							<!--<input type="submit" class="btn btn-primary bgbule"  value="提交" >
+							<input type="reset" value="取消" class="btn btn-primary bgbule mgleft" data-dismiss="modal">-->
+							<button type="button" class="btn btn-primary bgbule" onclick="save()">
+								<span><i class="glyphicon glyphicon-ok fzsmall"></i> 保存</span>
+							</button>
+							<button type="button" class="btn btn-primary bgbule mgleft" data-dismiss="modal" id="clooseSave">
+								<span><i class="glyphicon glyphicon-remove fzsmall"></i> 取消</span>
+							</button>
+						</div>
+					<!--</form>-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script src="start.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.min.js"></script><!--用户拖动元素，链接：http://api.jqueryui.com/draggable/#method-disable/-->
+	<script type="text/javascript" src="js/jquery.ui.touch-punch.js"></script><!--移动设备用户拖动元素，依赖juery-ui.min.js，链接：http://touchpunch.furf.com/-->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//调整模态框垂直居中
+			$("[data-toggle='modal']").click(function(){
+				var _target = $(this).attr('data-target');
+				setTimeout(function () {
+				var _modal = $(_target).find(".modal-dialog");
+				_modal.animate({'margin-top': parseInt(($(window).height() - _modal.height())/2)},"fast")
+				},1);
+			});
+			$("#modalDialog").draggable();//为模态对话框添加拖拽
+			$("#myModal").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+			query('1');
+			$("#allselectchecker").prop("checked", false);
+			$("#condition").find("input").val("");
+			$("#queryGender").val("").trigger("change");
+		});
+		
+		//全选
+		function selectAll() {
+			
+			if ($("#allselectchecker").is(':checked')) {
+				$(".col_selector").prop("checked", true);
+			} else {
+				$(".col_selector").prop("checked", false);
+			}
+		}
+		//表单清理
+		function add(){
+			$("#myModal").find(".form-group:not(#save)").find("input").val("");
+			$("#gender1").val("").trigger("change");
+		}
+
+		//保存个人信息
+		function save(){
+			var id = $("#id").val();
+			var name = $("#name").val();
+			if (name == "") {
+				alert("姓名不能为空");
+				return;
+			}
+			var gender = $("#gender1").val();
+			if (gender == "") {
+				alert("性别不能为空");
+				return;
+			}
+			var age = $("#age").val();
+			if (age == "") {
+				alert("年龄不能为空");
+				return;
+			}else{
+				if(!(/^([0-9]{1}|[1-9][0-9]{1})$/.test(age))){ 
+			        alert("年龄输入有误，请重填");  
+			        return;
+				}
+			}
+			var tel = $("#tel").val();
+			if (tel == "") {
+				alert("手机号不能为空");
+				return;
+			}else{
+				if(!(/^1[34578]\d{9}$/.test(tel))){ 
+			        alert("手机号输入有误，请重填");  
+			        return;
+				}
+			}
+			var type = "";
+			if(id == ""){
+				type="add";
+			}else{
+				type="edit";
+			}
+			$.ajax({
+				url: "http:127.0.0.1:8880",
+				type: "POST",
+				dataType : "json",
+				data: {
+					"Type":type,
+					"id": id,
+					"name": name,
+					"gender": gender,
+					"age": age,
+					"tel": tel
+				},
+				success: function(data){
+					$("#clooseSave").click();
+					query();
+					alert("操作成功");
+				},
+				error: function(){
+					alert("error");
+				}
+
+			})
+		}
+
+		//查询个人信息
+		function query(pagenumber){
+			var pagesize = $("#pageSizeSelector option:selected").val();
+			var pageNum = 1;
+			if(pagenumber != null){
+				pageNum = pagenumber;
+			}
+			var name = $("#queryName").val();
+			var gender = $("#queryGender").val();
+			var age = $("#queryAge").val();
+			var tel = $("#queryTel").val();
+			var typequery = "query";
+			if(name == ""){
+				name = "all";
+			}
+			if(gender == ""){
+				gender = "all";
+			}
+			if(age == ""){
+				age = "all";
+			}
+			if(tel == ""){
+				tel = "all";
+			}
+			$.ajax({
+				url: "http:127.0.0.1:8880",
+				type: "POST",
+				dataType : "json",
+				data: {
+					"Type":typequery,
+					"name": name,
+					"gender": gender,
+					"age": age,
+					"tel": tel,
+					"pagenumber":pageNum,
+					"pagesize":pagesize
+				},
+				success: function(data){
+					if(data.msg == "success"){
+						var htmlcode = "";
+						$.each(data.list, function(i, item) {
+							htmlcode += "<tr class=\"gradeA odd\"><td><input type=\"checkbox\" value=\"" + item.id + "\" class=\"col_selector\"></td>";
+							htmlcode += "<td class=\"text-center\">" + item.name + "</td>";
+							htmlcode += "<td class=\"text-center\">" + item.gender + "</td>";
+							htmlcode += "<td class=\"text-center\">" + item.age + "</td>";
+							htmlcode += "<td class=\"text-center\">" + item.tel + "</td>";
+							htmlcode += "<td class=\"text-center\"><div class=\"btn-group\">";
+							htmlcode += "<button class=\"btn btn-default btn-xs\" type=\"button\">操作</button>";
+							htmlcode += "<button data-toggle=\"dropdown\" class=\"btn btn-xs btn-primary dropdown-toggle\" type=\"button\">";
+							htmlcode += "<span class=\"caret\"></span>";
+							htmlcode += "<span class=\"sr-only\">Toggle Dropdown</span></button>";
+							htmlcode += "<ul role=\"menu\" class=\"dropdown-menu pull-right\">";
+							htmlcode += "<li><a href=\"###\" onclick=\"edit('" + item.id + "','" + item.name + "','" + item.gender + "','" + item.age + "','" + item.tel + "')\">编辑</a></li>";
+							htmlcode += "<li class=\"divider\"></li>";
+							htmlcode += "<li><a href=\"###\" onclick=\"del('" + item.id + "')\">删除</a></li></ul>";
+							htmlcode += "</div></td>";
+							htmlcode += "</tr>";
+						});
+						$("#InfoList").html(htmlcode);
+
+						if (data.page != null) {
+							genaratePaginateHtml(data.page.pagenumber, data.page.pageCount);
+							genarateRecordNumberHtml(data.page.pagenumber, data.page.pagesize, data.page.recordCount);
+						} else {
+							genaratePaginateHtml(1, 1);
+							genarateRecordNumberHtml(1, 10, 0);
+						}
+					}else{
+						alert("查询失败")
+					}
+				},
+				error: function(){
+					alert("error");
+				}
+			})
+		}
+
+		/**
+		 * 生成记录数信息
+		 * @method genarateRecordNumberHtml
+		 * @param {Number} currentpage 当前页
+		 * @param {Number} pagesize 每页记录条目数
+		 * @param {Number} totalRecord 总记录数
+		 */
+		function genarateRecordNumberHtml(currentpage, pagesize, totalRecord) {
+			var recordInfos = "";
+			if (totalRecord > 0) {
+			    recordInfos = "当前显示" + totalRecord + "条总记录";
+				recordInfos += "中第" + ((currentpage - 1) * pagesize + 1) + "-";
+				if (currentpage * pagesize > totalRecord) {
+					recordInfos += totalRecord;
+				} else {
+					recordInfos += currentpage * pagesize;
+				}
+				recordInfos += "条 ";
+			} else {
+				recordInfos = "当前显示0 条总记录中的第0-0条";
+			}
+			
+			$("#datatable_info").html(recordInfos);
+		}
+
+		/**
+		 * 生成分页信息
+		 * @method genaratePaginateHtml
+		 * @param {Number} currentpage 当前页
+		 * @param {Number} totalpage 总页数
+		 */
+		function genaratePaginateHtml(currentpage, totalpage, pagesize) {
+			currentshownpage = currentpage;
+
+			var htmlcode = "";
+			
+			//上一页
+			if (currentpage > 1) {
+				htmlcode += "<li class=\"pre\"><a href=\"#\" onclick=\"query('1')\"><span class=\"fa fa-angle-left\"></span>&nbsp;首页</a></li>";
+				htmlcode += "<li class=\"pre\"><a href=\"#\" onclick=\"query('" + (currentpage - 1) + "')\"><span class=\"fa fa-angle-left\"></span>&nbsp;上一页</a></li>";
+			} else {
+				htmlcode += "<li class=\"pre disabled\"><a href=\"#\"><span class=\"fa fa-angle-left\"></span>&nbsp;首页</a></li>";
+				htmlcode += "<li class=\"pre disabled\"><a href=\"#\"><span class=\"fa fa-angle-left\"></span>&nbsp;上一页</a></li>";
+			}
+			
+			//具体页码
+			if (totalpage <= 5) {
+				for (var i = 1; i <= totalpage; i++) {
+					if (currentpage == i) {
+						htmlcode += "<li class=\"active\"><a href=\"#\">" + i + "</a></li>";
+					} else {
+						htmlcode += "<li><a href=\"#\" onclick=\"query('" + i + "')\">" + i + "</a></li>";
+					}
+				}
+			} else {
+				var startpage = currentpage;
+				var endpage = currentpage;
+				while (true) {
+					if (endpage - startpage >= 4) {
+						break;
+					} else {
+						if (startpage > 1) {
+							startpage = startpage - 1;
+						}
+						if (endpage < totalpage) {
+							endpage = endpage - (-1);
+						}
+					}
+				}
+				
+				for (var i = startpage; i <= endpage; i++) {
+					if (currentpage == i) {
+						htmlcode += "<li class=\"active\"><a href=\"#\">" + i + "</a></li>";
+					} else {
+						htmlcode += "<li><a href=\"#\" onclick=\"query('" + i + "')\">" + i + "</a></li>";
+					}
+				}
+			}
+			
+			//下一页
+			if (totalpage > currentpage) {
+				htmlcode += "<li class=\"next\"><a href=\"#\" onclick=\"query('" + (parseInt(currentpage) + 1) + "')\">下一页&nbsp;<span class=\"fa fa-angle-right\"></span></a></li>";
+				htmlcode += "<li class=\"next\"><a href=\"#\" onclick=\"query('" + parseInt(totalpage) + "')\">末页&nbsp;<span class=\"fa fa-angle-right\"></span></a></li>";
+			} else {
+				htmlcode += "<li class=\"next disabled\"><a href=\"#\">下一页&nbsp;<span class=\"fa fa-angle-right\"></span></a></li>";
+				htmlcode += "<li class=\"next disabled\"><a href=\"#\">末页&nbsp;<span class=\"fa fa-angle-right\"></span></a></li>";
+			}
+			$("#paginationArea").html(htmlcode);
+		}
+
+
+		//编辑个人信息
+		function edit(id,name,gender,age,tel){
+			$("#id").val(id);
+			$("#name").val(name);
+			$("#gender1").val(gender);
+			$("#age").val(age);
+			$("#tel").val(tel);
+			$("#editshow").click();
+		}
+
+		//删除个人信息
+		function del(id){
+			var type = "del";
+			var ids = "";
+			if (id) {
+				ids = id;
+			} else {
+				var selectedItemNumber = $("tbody .col_selector:checked").length;
+				if (selectedItemNumber >= 1) {
+					$("tbody .col_selector:checked").each(function() {
+						ids += $(this).val() + ",";
+					});
+					if (ids != "") {
+						ids = ids.substring(0, ids.length - 1);
+					}
+				} else {
+					alert("请选择要删除的数据");
+					return;
+				}
+			}
+
+			if(confirm("确定删除？")){
+				$.ajax({
+					url: "http:127.0.0.1:8880",
+					type: "POST",
+					dataType : "json",
+					data: {
+						"Type":type,
+						"id": ids
+					},
+					success: function(data){
+						$("#clooseDel").click();
+						query();
+						alert("操作成功");
+						$("#allselectchecker").prop("checked",false);
+					},
+					error: function(){
+						alert("error");
+					}
+
+				});
+			}
+		}
+	</script>
+</body>
+</html>

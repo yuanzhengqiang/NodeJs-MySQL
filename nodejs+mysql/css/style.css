@@ -1,0 +1,86 @@
+.bgbule{
+	background-color: #4D90FD;
+}
+.bdbottom{
+	border-bottom:1px solid #dadada
+}
+.hide{
+	display: none;
+}
+.mdbg{
+	background-color: #FFF;
+}
+.mdsize{
+	width: auto;
+	height: auto;
+}
+.flleft{
+	float: left;
+}
+.flright{
+	float: right;
+}
+.fzsmall{
+	font-size: smaller;
+}
+.mgleft{
+	margin-left:20px; 
+}
+.mg0{
+	margin: 0px;
+}
+.mgtop2{
+	margin-top: 2px;
+}
+.mgtop5{
+	margin-top: 5px;
+}
+.mgtop10{
+	margin-top: 10px;
+}
+.mgtop20{
+	margin-top: 20px;
+}
+.mgbottom10{
+	margin-bottom: 10px;
+}
+.ofxhidden{
+	overflow-x: hidden;
+}
+.pd20{
+	padding:10px 20px;
+}
+.pdleft20{
+	padding-left: 20px;
+}
+.pdright20{
+	padding-right: 20px;
+}
+.pdbottom30{
+	padding-bottom: 30px;
+}
+.pdbottom60{
+	padding-bottom: 60px;
+}
+.red{
+	color: red;
+}
+.tacenter{
+	text-align:center;
+}
+.wd2{
+	width: 2%;
+}
+.wd10{
+	width: 10%;
+}
+.htauto{
+	height: auto;
+	overflow-y: hidden;
+}
+.wd50{
+	width: 50%;
+}
+.wdauto{
+	width:auto;
+}
